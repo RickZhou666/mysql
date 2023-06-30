@@ -4,15 +4,29 @@ everything about mysql
 
 # setup
 ```bash
+# pull
 $ docker pull mysql:5.7
 
 
-$ docker run --platform linux/x86_64 \
+# run
+# $ docker run --platform linux/x86_64 \
+# --name mysql_container \
+# -e MYSQL_ROOT_PASSWORD=admin \
+# -d -p 3307:3306 \
+# -v /Users/runzhou/space/data/mysqlconf:/etc/mysql/conf.d \
+# -v /Users/runzhou/space/data/mysqldata:/var/lib/mysql mysql:latest --explicit-defaults-for-timestamp=1
+
+
+$ docker run \
 --name mysql_container \
 -e MYSQL_ROOT_PASSWORD=admin \
--d -p 3306:3306 \
+-d -p 3307:3306 \
 -v /Users/runzhou/space/data/mysqlconf:/etc/mysql/conf.d \
--v /Users/runzhou/space/data/mysqldata:/var/lib/mysql mysql:5.7 --explicit-defaults-for-timestamp=1
+-v /Users/runzhou/space/data/mysqldata:/var/lib/mysql mysql:latest
+
+# connect
+$ mysql -h127.0.0.1 -uroot -padmin --port=3307
+
 
 # docker.cnf
 [mysqld]
@@ -47,6 +61,9 @@ $ chwon root:root backup.sql
 # (4) import data to dev52
 # (4.1) create database;
 $ mysql -h127.0.0.1 -uroot -padmin
+# with differnt port
+# https://dev.mysql.com/doc/refman/8.0/en/connecting.html
+
 $ create database test;
 
 
@@ -69,5 +86,33 @@ $ docker exec -it a22012cd1da3 bash
 
 
 ############################################ download mysql backup end ############################################
+
+```
+
+```sql
+-- only mysql8+ supported
+-- Recursive create https://dev.mysql.com/doc/refman/8.0/en/with.html#common-table-expressions-recursive
+-- need execute below in non-strict mode
+WITH RECURSIVE cte (n) AS
+(
+  SELECT 1
+  UNION ALL
+  SELECT n + 1 FROM cte WHERE n < 5
+);
+
+SELECT * FROM cte;
+
+$ mysql -h127.0.0.1 --port=3307 -uroot -padmin -e "SELECT @@GLOBAL.sql_mode;"
+
+-- default mode
+-- ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
+-- set as non-strict mode
+$ mysql -h127.0.0.1 --port=3307 -uroot -padmin -e "SET GLOBAL sql_mode = ’NO_ENGINE_SUBSTITUTION’;"
+
+-- reset
+$ mysql -h127.0.0.1 --port=3307 -uroot -padmin -e "SET GLOBAL sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION’;"
+
+$ mysql -h127.0.0.1 -uroot -padmin --port=3307
 
 ```
