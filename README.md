@@ -144,3 +144,15 @@ VALUES  ('382', '829', '0', '6578', '1688212800', '1688385600', '1688394528', '1
 UPDATE `schema`.`table` SET `detected_at` = `detected_at` + 10800 WHERE `policy_id` = 307 AND `detection_id` = 520;
 ```
 
+## 4. delete duplicates 
+```sql
+DELETE r.*
+  FROM ( 
+    SELECT task_id, dag_id, execution_date  FROM `boairflow`.`task_instance`
+       ) q
+  JOIN `boairflow`.`task_instance` r
+    ON r.task_id = q.task_id
+     AND r.dag_id = q.dag_id 
+     AND r.execution_date = q.execution_date;
+```
+
