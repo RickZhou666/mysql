@@ -132,3 +132,15 @@ LIMIT 1;
 -- LIMIT 10, 50   - start from idx 10, and display 10 + 50 rows
 
 ```
+
+## 2. insert query
+```sql
+INSERT INTO `schema`.`table` (`policy_id`, `detection_id`, `detection_order`, `query_id`, `detected_at`, `created_at`, `updated_at`, `count_number`)
+VALUES  ('382', '829', '0', '6578', '1688212800', '1688385600', '1688394528', '1'),
+```
+
+## 3. update query
+```sql
+UPDATE `schema`.`table` SET `detected_at` = `detected_at` + 10800 WHERE `policy_id` = 307 AND `detection_id` = 520;
+```
+
