@@ -116,3 +116,19 @@ $ mysql -h127.0.0.1 --port=3307 -uroot -padmin -e "SET GLOBAL sql_mode = 'ONLY_F
 $ mysql -h127.0.0.1 -uroot -padmin --port=3307
 
 ```
+
+
+# Sample query
+## 1. convert int to timestamp and check HOUR
+```sql
+SELECT a.*, HOUR(FROM_UNIXTIME(detected_at)) FROM  `scheme`.`table` a
+WHERE a.`detection_id` = 8289 
+	AND a.`policy_id` = 382
+  AND HOUR(FROM_UNIXTIME(detected_at)) = 9
+ORDER BY ID ASC
+LIMIT 1;
+
+-- LIMIT 1        - start from id row 1
+-- LIMIT 10, 50   - start from idx 10, and display 10 + 50 rows
+
+```
