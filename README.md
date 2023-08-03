@@ -164,6 +164,7 @@ mysqldump: Error 1053: Server shutdown in progress when dumping table `MAR_SELF_
 - https://stackoverflow.com/a/21564716/7163137
 
 
+<br><br><br><br><br><br>
 
 # Mysql
 
@@ -215,6 +216,142 @@ show tables;
 ## 5. drop table
 ## 6. update table
 ## 7. delete table records
+
+
+############################################################################################################
+######################## MySQL #############################################################################
+############################################################################################################
+# go the mysql folder
+$ cd /usr/local/mysql/bin
+
+# start mysql server
+$ ./mysql -u root -p
+runzhou123
+
+
+
+# quit mysql
+>> \q
+
+
+
+## I. Database management
+
+# 1. show all databases
+>> show databases;
+
+# 2. create database
+>> create database mybatis;
+
+# 3. delete database
+>> drop database mybatis;
+
+# alter edit database
+>> ALTER DATABASE testDB CHARACTER SET UTF8;
+
+# use database
+>> use mybatis;
+
+# select current database
+>> select database();
+
+
+## II. Table management 
+
+# create table
+> create table user (
+	id int(20) AUTO_INCREMENT PRIMARY KEY,
+	name varchar(30) not null,
+	pwd varchar(30) null);
+
+
+# show tables
+> show tables;
+
+# show table structure
+> desc PEOPLE;
+
+# alter edit table structure
+> ALTER TABLE KEYCHAIN CONVERT TO CHARACTER SET UTF8;
+
+# insert into table, boolean will transfer to tinyint(1)
+> alter table PEOPLE add star BOOL;
+
+
+# alter change column type
+> alter table PEOPLE MODIFY star int;
+
+# alter delete column
+> alter table PEOPLE DROP column start;
+
+# rename table
+> RENAME TABLE PEOPLE TO NEW_PEOPLE;
+
+# allow null or not null
+> ALTER TABLE PEOPLE MODIFY AGE INT(3) NULL;
+
+# create new table based on current table with its data
+> create table newTable select * from PEOPLE;
+
+# delete table
+> drop table user;
+
+## III. Data management
+
+# add record
+> insert into PEOPLE VALUES (null, 'Anny', 22, '1992-05-22');
+
+# delete record
+> delete from PEOPLE where name = 'Lisa';
+
+# update record
+> update PEOPLE set name='Calvin' where name = 'Garvey';
+
+# select record
+> select NAME, AGE, BIRTHDAY from PEOPLE;
+
+
+## IV. manage VIEW
+
+
+> mysql> CREATE VIEW PEOPLE_VIEW (
+    -> NAME, AGE)
+    -> AS SELECT NAME, AGE FROM PEOPLE;
+
+> select * from PEOPLE_VIEW;
+
+# replace view
+> CREATE OR REPLACE VIEW PEOPLE_VIEW(PEOPLE_ID,PEOPLE_NAME,PEOPLE_AGE) AS SELECT ID,NAME,AGE FROM PEOPLE;
+
+
+# insert into view
+> INSERT INTO PEOPLE_VIEW VALUES(NULL, 'Kerry', '33');
+
+# delete view
+> DROP VIEW PEOPLE_VIEW;
+
+
+
+
+
+############################################################################################################
+######################## MySQLWorkbench ####################################################################
+############################################################################################################
+# 1. execute current statement
+command + enter 
+
+# 2. execute all or selection 
+command + shift + enter
+
+
+
+
+############################################################################################################
+######################## Tips ####################################################################
+############################################################################################################
+# UNION/ UNION ALL
+UNION:  will remove duplicates
+UNION ALL: get all results
 
 
 <br><br><br><br><br><br>
@@ -317,3 +454,43 @@ select top 10 * from schema.table;
 SELECT COUNT(*) AS COUNT_NUM 
 FROM schema.table
 ```
+
+
+# Sample query
+## 1. convert int to timestamp and check HOUR
+```sql
+SELECT a.*, HOUR(FROM_UNIXTIME(detected_at)) FROM  `scheme`.`table` a
+WHERE a.`detection_id` = 8289 
+	AND a.`policy_id` = 382
+  AND HOUR(FROM_UNIXTIME(detected_at)) = 9
+ORDER BY ID ASC
+LIMIT 1;
+
+-- LIMIT 1        - start from id row 1
+-- LIMIT 10, 50   - start from idx 10, and display 10 + 50 rows
+
+```
+
+## 2. insert query
+```sql
+INSERT INTO `schema`.`table` (`policy_id`, `detection_id`, `detection_order`, `query_id`, `detected_at`, `created_at`, `updated_at`, `count_number`)
+VALUES  ('382', '829', '0', '6578', '1688212800', '1688385600', '1688394528', '1'),
+```
+
+## 3. update query
+```sql
+UPDATE `schema`.`table` SET `detected_at` = `detected_at` + 10800 WHERE `policy_id` = 307 AND `detection_id` = 520;
+```
+
+## 4. delete duplicates 
+```sql
+DELETE r.*
+  FROM ( 
+    SELECT task_id, dag_id, execution_date  FROM `boairflow`.`task_instance`
+       ) q
+  JOIN `boairflow`.`task_instance` r
+    ON r.task_id = q.task_id
+     AND r.dag_id = q.dag_id 
+     AND r.execution_date = q.execution_date;
+```
+
