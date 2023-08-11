@@ -221,7 +221,7 @@ show tables;
 ############################################################################################################
 ######################## MySQL #############################################################################
 ############################################################################################################
-# go the mysql folder
+1. go the mysql folder
 $ cd /usr/local/mysql/bin
 
 # start mysql server
@@ -230,84 +230,84 @@ runzhou123
 
 
 
-# quit mysql
+2. quit mysql
 >> \q
 
 
 
 ## I. Database management
 
-# 1. show all databases
+1. show all databases
 >> show databases;
 
-# 2. create database
+2. create database
 >> create database mybatis;
 
-# 3. delete database
+3. delete database
 >> drop database mybatis;
 
-# alter edit database
+4. alter edit database
 >> ALTER DATABASE testDB CHARACTER SET UTF8;
 
-# use database
+5. use database
 >> use mybatis;
 
-# select current database
+6. select current database
 >> select database();
 
 
 ## II. Table management 
 
-# create table
+1. create table
 > create table user (
 	id int(20) AUTO_INCREMENT PRIMARY KEY,
 	name varchar(30) not null,
 	pwd varchar(30) null);
 
 
-# show tables
+2. show tables
 > show tables;
 
-# show table structure
+3. show table structure
 > desc PEOPLE;
 
-# alter edit table structure
+4. alter edit table structure
 > ALTER TABLE KEYCHAIN CONVERT TO CHARACTER SET UTF8;
 
-# insert into table, boolean will transfer to tinyint(1)
+5. insert into table, boolean will transfer to tinyint(1)
 > alter table PEOPLE add star BOOL;
 
 
-# alter change column type
+6. alter change column type
 > alter table PEOPLE MODIFY star int;
 
-# alter delete column
+7. alter delete column
 > alter table PEOPLE DROP column start;
 
-# rename table
+8. rename table
 > RENAME TABLE PEOPLE TO NEW_PEOPLE;
 
-# allow null or not null
+9. allow null or not null
 > ALTER TABLE PEOPLE MODIFY AGE INT(3) NULL;
 
-# create new table based on current table with its data
+10. create new table based on current table with its data
 > create table newTable select * from PEOPLE;
 
-# delete table
+11. delete table
 > drop table user;
 
 ## III. Data management
 
-# add record
+1. add record
 > insert into PEOPLE VALUES (null, 'Anny', 22, '1992-05-22');
 
-# delete record
+2. delete record
 > delete from PEOPLE where name = 'Lisa';
 
-# update record
+3. update record
 > update PEOPLE set name='Calvin' where name = 'Garvey';
 
-# select record
+3. select record
 > select NAME, AGE, BIRTHDAY from PEOPLE;
 
 
@@ -320,14 +320,14 @@ runzhou123
 
 > select * from PEOPLE_VIEW;
 
-# replace view
+1. replace view
 > CREATE OR REPLACE VIEW PEOPLE_VIEW(PEOPLE_ID,PEOPLE_NAME,PEOPLE_AGE) AS SELECT ID,NAME,AGE FROM PEOPLE;
 
 
-# insert into view
+2. insert into view
 > INSERT INTO PEOPLE_VIEW VALUES(NULL, 'Kerry', '33');
 
-# delete view
+3. delete view
 > DROP VIEW PEOPLE_VIEW;
 
 
@@ -337,10 +337,10 @@ runzhou123
 ############################################################################################################
 ######################## MySQLWorkbench ####################################################################
 ############################################################################################################
-# 1. execute current statement
+1. execute current statement
 command + enter 
 
-# 2. execute all or selection 
+2. execute all or selection 
 command + shift + enter
 
 
@@ -349,9 +349,27 @@ command + shift + enter
 ############################################################################################################
 ######################## Tips ####################################################################
 ############################################################################################################
-# UNION/ UNION ALL
+UNION/ UNION ALL
 UNION:  will remove duplicates
 UNION ALL: get all results
+
+
+1. checking database size
+SELECT table_schema "DB Name",
+        ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM information_schema.tables 
+GROUP BY table_schema
+ORDER BY `DB Size in MB` DESC;
+
+
+2. checking table size
+SELECT 
+    table_name AS `Table`, 
+    round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` 
+FROM information_schema.TABLES 
+WHERE table_schema = "auditairflow"
+ORDER BY `Size in MB` DESC ;
+
 
 
 <br><br><br><br><br><br>
