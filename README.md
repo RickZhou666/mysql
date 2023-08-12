@@ -353,8 +353,9 @@ UNION/ UNION ALL
 UNION:  will remove duplicates
 UNION ALL: get all results
 
-
+```sql
 1. checking database size
+
 SELECT table_schema "DB Name",
         ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
 FROM information_schema.tables 
@@ -362,14 +363,14 @@ GROUP BY table_schema
 ORDER BY `DB Size in MB` DESC;
 
 
-2. checking table size
+3. checking table size
 SELECT 
     table_name AS `Table`, 
     round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` 
 FROM information_schema.TABLES 
 WHERE table_schema = "auditairflow"
 ORDER BY `Size in MB` DESC ;
-
+```
 
 
 <br><br><br><br><br><br>
